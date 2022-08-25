@@ -19,7 +19,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 options = webdriver.ChromeOptions()
 
 warnings.simplefilter("ignore")
-options.add_argument('--headless')
+#options.add_argument('--headless')
 options.add_argument('--disable-extensions')
 options.add_argument('--disable-dev-shm-usage')
 options.add_argument('--disable-gpu')
@@ -55,7 +55,7 @@ def loop_process():
 
     the_number_in_each_country = []
 
-    for i in range(0, len(pycountry.countries)):
+    for i in range(0, len(pycountry.countries) - 1):
         
         country_name = all_country_data[i,1]
         print(country_name)
@@ -66,7 +66,6 @@ def loop_process():
         
         if len(countries) == 0:
             the_number_in_each_country.append(None)
-            print(the_number_in_each_country)
 
             country_search_box.send_keys(Keys.CONTROL + "a")
             country_search_box.send_keys(Keys.DELETE)
@@ -85,7 +84,6 @@ def loop_process():
 
     from_list_to_array = np.array([the_number_in_each_country])
     all_country_data = np.insert(all_country_data, 2, from_list_to_array, axis=1)
-    print(all_country_data)
 
 def correspondence_check_and_get_data():
     #check the correspondence between the country name got and the target country
@@ -96,7 +94,6 @@ def correspondence_check_and_get_data():
 
         #judging whether loading is done or not
         while str(driver.find_element_by_xpath('//div[@id="searchbox"]/div/form/span').get_attribute('hidden')) != 'true':
-            time.sleep(0.5)
             print('wait loading...')
 
         else:
@@ -104,7 +101,7 @@ def correspondence_check_and_get_data():
             text = driver.find_element_by_xpath('//div[@id="stats"]/div/span').text
             the_data = re.sub(r"\D", "", text)
             the_number_in_each_country.append(int(the_data))
-            print(the_number_in_each_country)
+            print(the_data)
 
             country_search_box.send_keys(Keys.CONTROL + "a")
             country_search_box.send_keys(Keys.DELETE)
